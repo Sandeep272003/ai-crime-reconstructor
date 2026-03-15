@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pillow
+librosa
+numpy
+matplotlib
+fpdf
+python-multipart
