@@ -1,11 +1,13 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
-# Install system dependencies for Audio processing (Librosa) and PDF generation
+# Install system dependencies
+# We replaced libgl1-mesa-glx with libgl1 and added libglib2.0-0 for CV2/Plotting support
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     libsndfile1 \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
@@ -27,4 +29,5 @@ RUN mkdir -p vault reports
 EXPOSE 8000
 
 # Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# We use the $PORT environment variable which Render provides automatically
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
